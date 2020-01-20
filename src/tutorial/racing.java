@@ -1,4 +1,5 @@
 package tutorial;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,34 +8,21 @@ public class racing {
 
     public static void main(String[] args) {
 
-        List<Horse2> list = new ArrayList<Horse2>();
+        List<Horse> list = new ArrayList<Horse>();
 
-//        list.add(new Horse2("1번말"));
-//        list.add(new Horse2("2번말"));
-//        list.add(new Horse2("3번말"));
-//        list.add(new Horse2("4번말"));
-//        list.add(new Horse2("5번말"));
-//        list.add(new Horse2("6번말"));
-//        list.add(new Horse2("7번말"));
-//        list.add(new Horse2("8번말"));
-//        list.add(new Horse2("9번말"));
-//        list.add(new Horse2("0번말"));
-        
-		Horse[] Horse2 = new Horse[] {
-				new Horse("1번마"),
-				new Horse("2번마"),
-				new Horse("3번마"),
-				new Horse("4번마"),
-				new Horse("5번마"),
-				new Horse("6번마"),
-				new Horse("7번마"),
-				new Horse("8번마"),
-				new Horse("9번마"),
-				new Horse("0번마")
-		};
+        list.add(new Horse("1번말"));
+        list.add(new Horse("2번말"));
+        list.add(new Horse("3번말"));
+        list.add(new Horse("4번말"));
+        list.add(new Horse("5번말"));
+        list.add(new Horse("6번말"));
+        list.add(new Horse("7번말"));
+        list.add(new Horse("8번말"));
+        list.add(new Horse("9번말"));
+        list.add(new Horse("0번말"));
 
         // 말달리는 메서드
-        for (Horse2 horse : list) {
+        for (Horse horse : list) {
             horse.start();
         }
 
@@ -45,9 +33,9 @@ public class racing {
 }
 
 class PrintHorse extends Thread {
-    List<Horse2> list;
+    List<Horse> list;
 
-    public PrintHorse(List<Horse2> h1) {
+    public PrintHorse(List<Horse> h1) {
         this.list = h1;
     }
 
@@ -58,7 +46,7 @@ class PrintHorse extends Thread {
         boolean ing = true;
         while (ing) {
 
-            for (Horse2 h2 : list) {
+            for (Horse h2 : list) {
                 if(h2.isGoal()==true) {
                     System.out.print(h2.getHName() + " : ");
                     for (int j = 0; j < 50; j++) {
@@ -92,7 +80,7 @@ class PrintHorse extends Thread {
                     h2.setGoal(true);
                 }
 
-            } // end for
+            } 
 
             //일정 시간마다 출력
             try {
@@ -108,9 +96,10 @@ class PrintHorse extends Thread {
                 System.out.println("=========경기 끝!=======");
                 ing=false;
             }
-        }// end while
+        }
+
         Collections.sort(list);
-        for (Horse2 h2 : list) {
+        for (Horse h2 : list) {
             System.out.printf("%3d 등  :  %3s",h2.getRank(),h2.getHName());
             System.out.println();
         }
@@ -120,13 +109,17 @@ class PrintHorse extends Thread {
 }
 
 // 말 클래스
-class Horse2 extends Thread implements Comparable<o>{
+class Horse extends Thread implements Comparable<Horse>{
     private String name;
     private int rank = 0;
     private int location = 0;
     public volatile boolean goal = false; // 결승지점 통과 여부
     
-    @Override
+    public Horse(String name) {
+    	this.name = name;
+	}
+
+	@Override
     public void run() {
         int cnt = 0;
         while (true) {
@@ -148,9 +141,9 @@ class Horse2 extends Thread implements Comparable<o>{
         return name;
     }
 
-//     public void setName(String name) {
-//     this.name = name;
-//     }
+    // public void setName(String name) {
+    // this.name = name;
+    // }
 
     public boolean isGoal() {
         return goal;
@@ -173,9 +166,8 @@ class Horse2 extends Thread implements Comparable<o>{
     }
 
 	@Override
-	public int compareTo(o o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int compareTo(Horse ran) {
+		return getName().compareTo(ran.getName());
 	}
 
 }
