@@ -18,7 +18,6 @@ public class T10_ThreadStateTest {
 	public static void main(String[] args) {
 		StatePrintThread spt 
 			= new StatePrintThread(new TargetThread());
-		
 		spt.start();
 	}
 }

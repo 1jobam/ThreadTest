@@ -8,6 +8,91 @@ package kr.or.ddit.basic;
  */
 public class T13_ThreadStopTest {
 	public static void main(String[] args) {
+//		ThreadStopEx1 th = new ThreadStopEx1();
+//		th.start();
+//		
+//		try {
+//			Thread.sleep(1000);
+//		}catch(InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		
+////		th.stop();
+//		th.setStop(true);
 		
+		// interrupt() 메서드를 이용한 쓰레드 멈추기
+		ThreadStopEx2 th2 = new ThreadStopEx2();
+		th2.start();
+		
+		try {
+			Thread.sleep(1000);
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		th2.interrupt(); // 인터럽트 걸기
+		
+	}
+}
+
+/*
+ * 상태 플래그를 활용한 쓰레드 멈추기
+ */
+class ThreadStopEx1 extends Thread{
+	private boolean stop;
+	
+	public void setStop(boolean stop) {
+		this.stop = stop;
+	}
+	
+	@Override
+	public void run() {
+		while(!stop) {
+			System.out.println("쓰레드 처리중...");
+		}
+		System.out.println("자원 정리 중...");
+		System.out.println("실행 종료.");
+	}
+}
+
+/*
+ * interrupt() 메서드를 이용하여 쓰레드를 멈추게 하는 방법
+ */
+class ThreadStopEx2 extends Thread{
+	@Override
+	public void run() {
+		/*// 방법1 => sleep()메서드나 join()메서드 등을 사용했을 때
+		//			interrupt()메서드를 호출하면 InterruptedException이
+		//			발생한다.
+		try {
+			while(true) {
+				System.out.println("쓰레드 처리 중...");
+				Thread.sleep(1);
+			}
+		}catch(InterruptedException e) {
+//			e.printStackTrace(); //인터럽트 예외를 발생시켜 무한 반복을 빠져나오게 설정이 가능하다  ex). th2.interrupt 를 사용
+		}
+		*/
+		// 방법2 => interrupt() 메서드가 호출 되었는지 검사하기
+		while(true) {
+			System.out.println("쓰레드 처리 중...");
+			
+			// 검사방법1 => 쓰레드의 인스턴스용 메서드를 이용하는 방법
+			if(this.isInterrupted()) { //interrupt메서드가 호출되면 true
+				System.out.println("인스턴스용 isInterrupted()");
+				break;
+			}
+			
+			// 두가지 검사방법 중 인스턴스용 메서드를 이용하는 방법이 위의 방법은 true를 리턴해주고
+			// 아래의 방법은 첫번째는 true 리턴후 원래값인 false로 인터럽트가 안걸렷던 상태로 변경이 되어 원치 않는 값이 나올수있다.
+			
+			// 검사방법2 => 쓰레드의 정적 메서드를 이용하는 방법
+			/*if(Thread.interrupted()) { // interrupt()메서드 호출되면 true
+				System.out.println("정적 메서드 interrupted()");
+				break;
+			}*/
+		}
+		System.out.println("자원 정리 중...");
+		System.out.println("실행 종료.");
 	}
 }
