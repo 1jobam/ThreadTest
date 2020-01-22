@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class HorseRacing {
+	
 	public static void main(String[] args) {
 		
 		List<Horse> mal = new ArrayList<Horse>();
@@ -30,7 +31,7 @@ public class HorseRacing {
 }
 
 class Racing extends Thread{
-	List<Horse> all;
+	List<Horse> all = new ArrayList<Horse>();
 
 	public Racing(List<Horse> all) {
 		this.all = all;
@@ -39,16 +40,17 @@ class Racing extends Thread{
 	@Override
 	public void run() {
 		String[] arr = new String[50];
-		int ran = 0;
+		int ran = 1;
 		boolean chk = true;
 		
 		while(chk) {
 			
 			for(Horse horrac : all) {
+				System.out.println();
 				if(horrac.isEnd() == true) {
 					System.out.print(horrac.getNames() + " : ");
-				for(int j = 0; j < 50; j++) {
-					arr[j] = "*";
+				for(int j = 0; j < 1; j++) {
+					arr[j] = "------------- " + horrac.getNames() + "님은 " + horrac.getRank() + "번째로 도착하셨습니다." + " -------------";
 					System.out.print(arr[j]);
 				}
 				System.out.println();
@@ -86,7 +88,7 @@ class Racing extends Thread{
 			}
 			System.out.println();
 			
-			if(ran == 10) {
+			if(ran == 11) {
 				System.out.println("경기 종료.");
 				chk = false;
 			}
@@ -126,7 +128,7 @@ class Horse extends Thread implements Comparable<Horse>{
 		while(true) {
 			loc += count;
 			try {
-				Thread.sleep((int)(Math.random() * 1000) + 1001);
+				Thread.sleep((int)(Math.random() * 2000) + 1);
 			}catch(InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -164,6 +166,7 @@ class Horse extends Thread implements Comparable<Horse>{
 
 	@Override
 	public int compareTo(Horse o) {
-		return getNames().compareTo(getNames());
+//		return this.getNames().compareTo(getNames());
+		return  Integer.compare(this.rank, o.rank);
 	}
 }
